@@ -1,11 +1,11 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class Hospital {
-	public String name;
-	public Receptionist receptionist;
-	public List<Patient> patients;
-	public List<Doctor> doctors;
+public class Hospital<T extends Patient> {
+	private String name;
+	private Receptionist receptionist;
+	private List<T> patients;
+	private List<Doctor> doctors;
 	
 	public Hospital(String name) {
 		setName(name);
@@ -14,7 +14,7 @@ public class Hospital {
 		setDoctors(new ArrayList<>());
 	}
 	
-	public Hospital(String name, List<Patient> patients, List<Doctor> doctors, Receptionist receptionist) {
+	public Hospital(String name, List<T> patients, List<Doctor> doctors, Receptionist receptionist) {
 		setName(name);
 		setPatients(patients);
 		setDoctors(doctors);
@@ -36,11 +36,11 @@ public class Hospital {
 		this.receptionist = receptionist;
 	}
 	
-	public List<Patient> getPatients() {
+	public List<T> getPatients() {
 		return patients;
 	}
 	
-	public void setPatients(List<Patient> patients) {
+	public void setPatients(List<T> patients) {
 		this.patients = patients;
 	}
 	
@@ -56,7 +56,7 @@ public class Hospital {
 		doctors.add(doctor);
 	}
 	
-	public void addPatient(Patient patient) {
+	public void addPatient(T patient) {
 		patients.add(patient);
 	}
 }

@@ -1,44 +1,49 @@
 public class Examination {
-	private String diagnosis;
+	
 	private Patient patient;
 	private Doctor doctor;
+	private Date examinationDate;
 	
 	public Examination(Patient patient, Doctor doctor) {
-		setDiagnosis("No diagnosis.");
 		setPatient(patient);
 		setDoctor(doctor);
+		setExaminationDate(Date.getCurrentDate());
 	}
 	
-	public Analysis requestAnalysis() {
-		//
+	public RadiologyAnalysis requestRadiology() {
+		return new RadiologyAnalysis(patient);
 	}
 	
-	public void startTreatment() {
-		//
+	public BloodTestAnalysis requestBloodTest() {
+		return new BloodTestAnalysis(patient);
 	}
 	
-	public String getDiagnosis() {
-		return diagnosis;
+	public void startTreatment(Treatment treatment) {
+		treatment.startTreatment();
 	}
 	
-	public void setDiagnosis(String diagnosis) {
-		this.diagnosis = diagnosis;
-	}
-
 	public Patient getPatient() {
 		return patient;
-	}
-
-	private void setPatient(Patient patient) {
-		this.patient = patient;
 	}
 
 	public Doctor getDoctor() {
 		return doctor;
 	}
 
+	private void setPatient(Patient patient) {
+		this.patient = patient;
+	}
+	
 	private void setDoctor(Doctor doctor) {
 		this.doctor = doctor;
+	}
+
+	public Date getExaminationDate() {
+		return examinationDate;
+	}
+
+	private void setExaminationDate(Date examinationDate) {
+		this.examinationDate = examinationDate;
 	}
 	
 	

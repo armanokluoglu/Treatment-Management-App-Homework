@@ -1,17 +1,33 @@
 public class Patient {
-	public Hospital hospital;
-	public String fullName;
 	
-	public Patient(Hospital hospital, String fullName) {
+	private Hospital<Patient> hospital;
+	private String fullName;
+	private Examination examination;
+	private boolean isExamined;
+	
+	
+	public Patient(Hospital<Patient> hospital, String fullName) {
 		setHospital(hospital);
 		setFullName(fullName);
+		isExamined = false;
+		setExamination(null);
 	}
 	
-	public Hospital getHospital() {
+		
+	public boolean isExamined() {
+		return isExamined;
+	}
+	
+	public void setExamined(Doctor doctor) {
+		this.isExamined = true;
+		setExamination(new Examination(this, doctor));
+	}
+
+	public Hospital<Patient> getHospital() {
 		return hospital;
 	}
 	
-	public void setHospital(Hospital hospital) {
+	public void setHospital(Hospital<Patient> hospital) {
 		this.hospital = hospital;
 	}
 	
@@ -22,4 +38,39 @@ public class Patient {
 	private void setFullName(String fullName) {
 		this.fullName = fullName;
 	}
+	
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Patient other = (Patient) obj;
+		if (this.equals(other)) {
+			return true;
+		}
+		return false;
+	}
+
+
+	public boolean equals(Patient patient) {
+		if(getFullName() == patient.getFullName()) {
+			return true;
+		}
+		return false;
+	}
+
+
+	public Examination getExamination() {
+		return examination;
+	}
+
+
+	private void setExamination(Examination examination) {
+		this.examination = examination;
+	}
+	
 }
