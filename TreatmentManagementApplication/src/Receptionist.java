@@ -14,8 +14,9 @@ public class Receptionist {
 	}
 	
 	public void registerAPatient(Doctor doctor, Patient patient, Date appointmentDate) {
-		getHospital().addPatient(patient);
 		Appointment<Patient, Doctor> appointment = new Appointment<Patient, Doctor>(patient, doctor, appointmentDate);
+		patient.setAppointment(appointment);
+		getHospital().addPatient(patient);
 		schedule.add(appointment);
 	}
 	
@@ -27,6 +28,16 @@ public class Receptionist {
 			}
 		}
 		return todaysSchedule;
+	}
+	
+	public SurgeryAppointment getSurgeryAppointmentForSurgeon(Surgeon surgeon) {
+		SurgeryAppointment surgeryAppointment = null;
+		for(Appointment<Patient, Doctor> appointment: getSchedule()) {
+			if(appointment.getDoctor().equals(surgeon)){
+				surgeryAppointment = (SurgeryAppointment) appointment;
+			}
+		}
+		return surgeryAppointment;
 	}
 	
 	public List<Appointment<Patient, Doctor>> getSchedule()	{return schedule;}

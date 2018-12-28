@@ -195,6 +195,25 @@ public class TreatmentManagement {
 							Prescription presc = new Prescription(medName, medDosage);
 							System.out.print(presc.toString() + " has been prescribed.");
 							break;
+						case 8:
+							System.out.print("Enter the patient's name here: ");
+							String patientName3 = scanner.nextLine();
+							System.out.print("Enter the surgeon's last name here: ");
+							String surgeonName = scanner.nextLine();
+							Doctor surgeon = null;
+							if(surgeonName.equals("Strange")) {
+								surgeon = sur1;
+							} else if(surgeonName.equals("Turk")) {
+								surgeon = sur2;
+							}
+							System.out.print("Please enter a date for the appointment (yyyy-mm-dd): ");
+							String appointmentDate = scanner.nextLine();
+							Date surgeryDate = new Date(appointmentDate);
+							System.out.print("Please enter the number of days the patient will stay at the hospital for: ");
+							int numberOfDays = scanner.nextInt();
+							Appointment surgeryAppointment = new SurgeryAppointment(doctor.searchAnExaminedPatient(patientName3), surgeon, surgeryDate, numberOfDays);
+							System.out.println("A surgery appointment has been created for " + patientName3 + " with Dr. " + surgeon.getLastName() + " as the surgeon.");
+							System.out.println("Patient will go under surgery on " + surgeryDate.toString() + " and will stay at the hospital for " + numberOfDays + " days.");
 					}
 				}
 				break;

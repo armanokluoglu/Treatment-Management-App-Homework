@@ -4,9 +4,12 @@ public class Surgeon extends Doctor {
 		super(hospital, firstName, lastName);
 	}
 	
-	public Surgery searchForASurgeryAppointment() {
-		//
+	public SurgeryAppointment searchForASurgeryAppointment(Receptionist receptionist) {
+		return receptionist.getSurgeryAppointmentForSurgeon(this);
 	}
 	
-	
+	public void startSurgeryOnPatient(Patient patient) {
+		Surgery surgery = new Surgery(this, patient);
+		surgery.startTreatment();
+	}
 }

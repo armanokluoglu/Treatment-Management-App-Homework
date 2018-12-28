@@ -1,18 +1,17 @@
 public class Patient {
-	
 	private Hospital<Patient> hospital;
 	private String fullName;
 	private Examination examination;
 	private boolean isExamined;
-	
+	private Appointment appointment;
 	
 	public Patient(Hospital<Patient> hospital, String fullName) {
 		setHospital(hospital);
 		setFullName(fullName);
 		isExamined = false;
 		setExamination(null);
+		setAppointment(null);
 	}
-	
 		
 	public boolean isExamined() {
 		return isExamined;
@@ -39,7 +38,14 @@ public class Patient {
 		this.fullName = fullName;
 	}
 	
-	
+	public Appointment getAppointment() {
+		return appointment;
+	}
+
+	public void setAppointment(Appointment appointment) {
+		this.appointment = appointment;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -55,7 +61,6 @@ public class Patient {
 		return false;
 	}
 
-
 	public boolean equals(Patient patient) {
 		if(getFullName() == patient.getFullName()) {
 			return true;
@@ -63,14 +68,11 @@ public class Patient {
 		return false;
 	}
 
-
 	public Examination getExamination() {
 		return examination;
 	}
 
-
 	private void setExamination(Examination examination) {
 		this.examination = examination;
 	}
-	
 }

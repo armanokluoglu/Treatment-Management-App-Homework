@@ -1,6 +1,4 @@
-
 public class Appointment<P extends Patient, D extends Doctor> {
-
 	private P patient;
 	private D doctor;
 	private Date appointmentDate;
@@ -41,5 +39,4 @@ public class Appointment<P extends Patient, D extends Doctor> {
 			   "Appointment Patient: " + patient + "\n" + 
 			   "Appointment Date: " + appointmentDate;
 	}
-	
 }
