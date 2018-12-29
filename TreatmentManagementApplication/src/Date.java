@@ -8,6 +8,13 @@ public class Date {
 	private int day;
 	private boolean isInitialized = false;
 	
+	public Date() {
+		this.year = 0;
+		this.month = 0;
+		this.day = 0;
+		isInitialized = true;
+	}
+	
 	public Date(int year, int month, int day) {
 		setYear(year);
 		setMonth(month);
@@ -61,11 +68,8 @@ public class Date {
 	
 	public String toString() {
 		checkInitialization();
-		StringBuilder stringBuilder = new StringBuilder();
-		stringBuilder.append(String.valueOf(year));
-		stringBuilder.append(String.valueOf(month));
-		stringBuilder.append(String.valueOf(day));
-		return stringBuilder.toString();
+		String str = year + "-" + month + "-" + day;
+		return str;
 	}
 	
 	public static Date getCurrentDate() {
@@ -91,6 +95,13 @@ public class Date {
 								+ 30*(date1.getMonth() - date2.getMonth()) + (date1.getDay() - date2.getDay());
 		}
 		return difference;
+	}
+	
+	public boolean equals(Date date) {
+		if(getYear() == date.getYear() && getMonth() == date.getMonth() && getDay() == date.getDay()) {
+			return true;
+		}
+		return false;
 	}
 	
 	private void checkInitialization() {

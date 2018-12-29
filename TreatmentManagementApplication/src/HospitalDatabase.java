@@ -2,15 +2,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HospitalDatabase {
-
-	private List<Analysis> analyzes;
+	private List<Analysis> analyses;
 	private List<Doctor> doctors;
 	private List<Patient> patients;
 	
 	public HospitalDatabase(List<Patient> patients, List<Doctor> doctors) {
 		setDoctors(doctors);
 		setPatients(patients);
-		analyzes = new ArrayList<Analysis>();
+		analyses = new ArrayList<Analysis>();
 	}
 	
 	public void setDoctors(List<Doctor> doctors) {
@@ -26,33 +25,36 @@ public class HospitalDatabase {
 	
 	public List<Doctor> getDoctors() { return doctors; }
 	
-	
-	public List<Analysis> getAnalyzes(){return analyzes;}
+	public List<Analysis> getAnalyzes(){return analyses;}
 	
 	public void setAnalyzes(List<Analysis> analyzes) {
 		if(analyzes == null) {
 			throw new IllegalArgumentException("Given analysis list is null.");
 		}
-		this.analyzes = analyzes;
+		this.analyses = analyzes;
 	}
 	
 	public void addAnAnalysis(Analysis anAnalysis) {
 		if(anAnalysis == null) {
 			throw new IllegalArgumentException("Given analysis is null.");
 		}
-		analyzes.add(anAnalysis);
+		analyses.add(anAnalysis);
 	}
 	
-	public Analysis findTheAnalysis(String patientName) throws AnalysisNotFoundException {
+	public List<Analysis> findTheAnalysis(String patientName) throws AnalysisNotFoundException {
 		if(patientName == null) {
 			throw new IllegalArgumentException("Given patient name is null.");
 		}
-		for(Analysis nextAnalysis: analyzes) {
-			if(nextAnalysis.getPatient().getFullName() == patientName) {
-				return nextAnalysis;
+		List<Analysis> list = new ArrayList<>();
+		for(Analysis nextAnalysis: analyses) {
+			if(nextAnalysis.getPatient().getFullName().equals(patientName)) {
+				list.add(nextAnalysis);
 			}
 		}
-		throw new AnalysisNotFoundException("Analysis with given patient could not be found.");
+		if(list.size() == 0) {
+			throw new AnalysisNotFoundException("Analysis with given patient could not be found.");
+		}
+		return list;
 	}
 
 	public void addPatient(Patient patient) {

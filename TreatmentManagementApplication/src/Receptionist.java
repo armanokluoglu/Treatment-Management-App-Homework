@@ -2,7 +2,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Receptionist {
-	
 	private Hospital hospital;
 	private String fullName;
 	private List<Appointment<Patient, Doctor>> schedule;
@@ -31,9 +30,9 @@ public class Receptionist {
 	}
 	
 	public SurgeryAppointment getSurgeryAppointmentForSurgeon(Surgeon surgeon) {
-		SurgeryAppointment surgeryAppointment = null;
+		SurgeryAppointment surgeryAppointment = new SurgeryAppointment();
 		for(Appointment<Patient, Doctor> appointment: getSchedule()) {
-			if(appointment.getDoctor().equals(surgeon)){
+			if(appointment.getDoctor().equals(surgeon) && appointment.getClass().equals(surgeryAppointment.getClass())){
 				surgeryAppointment = (SurgeryAppointment) appointment;
 			}
 		}

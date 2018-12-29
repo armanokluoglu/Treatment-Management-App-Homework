@@ -1,27 +1,53 @@
 public class Examination {
-	
 	private Patient patient;
 	private Doctor doctor;
 	private Date examinationDate;
+	private RadiologyAnalysis ra;
+	private BloodTestAnalysis bta;
 	
 	public Examination(Patient patient, Doctor doctor) {
 		setPatient(patient);
 		setDoctor(doctor);
 		setExaminationDate(Date.getCurrentDate());
+		setRa(null);
+		setBta(null);
 	}
 	
 	public RadiologyAnalysis requestRadiology() {
-		return new RadiologyAnalysis(patient);
+		if(getRa() == null) {
+			setRa(new RadiologyAnalysis(patient));
+		}
+		return getRa();
 	}
 	
 	public BloodTestAnalysis requestBloodTest() {
-		return new BloodTestAnalysis(patient);
+		if(getBta() == null) {
+			setBta(new BloodTestAnalysis(patient));
+		}
+		return getBta();
 	}
 	
 	public void startTreatment(Treatment treatment) {
 		treatment.startTreatment();
 	}
 	
+	
+	public RadiologyAnalysis getRa() {
+		return ra;
+	}
+
+	public void setRa(RadiologyAnalysis ra) {
+		this.ra = ra;
+	}
+
+	public BloodTestAnalysis getBta() {
+		return bta;
+	}
+
+	public void setBta(BloodTestAnalysis bta) {
+		this.bta = bta;
+	}
+
 	public Patient getPatient() {
 		return patient;
 	}

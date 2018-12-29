@@ -8,11 +8,20 @@ public class Doctor {
 	private List<Patient> examinedPatients;
 	private List<Patient> patientsUnderCare;
 	
+	public Doctor() {
+		this.hospital = null;
+		this.firstName = "";
+		this.lastName = "";
+		examinedPatients = new ArrayList<Patient>();
+		patientsUnderCare = new ArrayList<Patient>();
+	}
+	
 	public Doctor(Hospital hospital, String firstName, String lastName) {
 		setHospital(hospital);
 		setFirstName(firstName);
 		setLastName(lastName);
 		examinedPatients = new ArrayList<Patient>();
+		patientsUnderCare = new ArrayList<Patient>();
 	}
 	
 	public Examination examine(Patient patient) {

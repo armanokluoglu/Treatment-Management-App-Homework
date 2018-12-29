@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -9,7 +10,6 @@ public class DoctorUserMenu {
 		scanner = new Scanner(System.in);
 	}
 	
-	
 	private void checkForSurgeriesOfToday(Receptionist receptionist, Surgeon sur1, Surgeon sur2) {
 		SurgeryAppointment sa = receptionist.getSurgeryAppointmentForSurgeon(sur1);
 		Patient patientForSurgery = receptionist.getSurgeryAppointmentForSurgeon(sur1).getPatient();
@@ -17,14 +17,11 @@ public class DoctorUserMenu {
 		Patient patientForSurgery_2 = receptionist.getSurgeryAppointmentForSurgeon(sur2).getPatient();
 		if(sa.getAppointmentDate() == Date.getCurrentDate()) {
 			sur1.startSurgeryOnPatient(patientForSurgery);
-			patientForSurgery = new InmatePatient(patientForSurgery); //After the surgery, make patients inmate patients.
 		}
 		if(sa_2.getAppointmentDate() == Date.getCurrentDate()) {
 			sur2.startSurgeryOnPatient(patientForSurgery_2);
-			patientForSurgery_2 = new InmatePatient(patientForSurgery_2); //After the surgery, make patients inmate patients.
 		}
 	}
-	
 	
 	private void listTodaysAppointments(Receptionist receptionist, Doctor doctor) {
 		List<Appointment<Patient, Doctor>> todaysAps = receptionist.getAppointmentsOfDate(Date.getCurrentDate());
@@ -39,7 +36,6 @@ public class DoctorUserMenu {
 		}
 	}
 	
-	
 	private void listPatientsUnderCare(Doctor doctor) {
 		List<Patient> patientsUnderCare = doctor.getAllPatientsUnderCare();
 		System.out.println("Listing patients under care...");
@@ -48,15 +44,22 @@ public class DoctorUserMenu {
 		}
 	}
 	
-	
 	private void searchAnalysis(Hospital hospital) {
+		scanner.nextLine();
 		System.out.println("Please enter the patient's full name: ");
 		String patientName = scanner.nextLine();
-		Analysis foundAnalysis = hospital.searchAnalysis(patientName);
-		System.out.println("Searched analysis is found!");
-		System.out.println(foundAnalysis.toString());
+		List<Analysis> foundAnalyses = new ArrayList<>();
+		try {
+			foundAnalyses = hospital.searchAnalysis(patientName);
+		} catch (AnalysisNotFoundException e) {
+			System.out.println(e.getMessage());
+			return;
+		}
+		System.out.println("Found Analyses:");
+		for(Analysis analysis: foundAnalyses) {
+			System.out.println(analysis.toString());
+		}
 	}
-	
 	
 	private void listExaminedPatients(Doctor doctor) {
 		List<Patient> examinedPatients = doctor.getAllExaminedPatients();
@@ -66,18 +69,19 @@ public class DoctorUserMenu {
 	}
 	
 	private void searchAnExaminedPatient(Doctor doctor) {
+		scanner.nextLine();
 		System.out.print("Please enter the full name of patient: ");
 		String patientsName = scanner.nextLine();
 		Patient searchedPatient = doctor.searchAnExaminedPatient(patientsName);
 		Date examinationDate = searchedPatient.getExamination().getExaminationDate();
 		System.out.println("Getting the patient info....");
-		System.out.println("Patient info: " + searchedPatient.toString());
+		System.out.println("Patient name: " + searchedPatient.toString());
 		System.out.println("Examination date: " + examinationDate.toString());
-		System.out.println("Patient type: " + searchedPatient.getClass());
+		System.out.println("Patient type: " + searchedPatient.getClass().getSimpleName());
 	}
 	
-	
 	private void writeAPrescription(Doctor doctor) {
+		scanner.nextLine();
 		System.out.print("Enter patient's name here: ");
 		String patientName2 = scanner.nextLine();
 		doctor.searchAnExaminedPatient(patientName2); //In case of such patient does not exist
@@ -86,17 +90,17 @@ public class DoctorUserMenu {
 		System.out.print("Enter the dosage here: ");
 		double medDosage = scanner.nextDouble();
 		Prescription presc = doctor.writeAPrescription(medName, medDosage);
-		System.out.print(presc.toString() + " has been prescribed.");
+		System.out.println(presc.getName() + " has been prescribed.\n");
 	}
 	
 	private void requestAnalysis(Doctor doctor) {
+		scanner.nextLine();
 		System.out.print("Please enter the patient's name: ");
 		String name = scanner.nextLine();
 		if(!doctor.searchAnExaminedPatient(name).isExamined()) {
 			try {
 				throw new AnalysisNotFoundException();
 			} catch (AnalysisNotFoundException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -105,33 +109,42 @@ public class DoctorUserMenu {
 		System.out.println("2. Radiology Analysis");
 		System.out.println("3. Both");
 		int testOp = scanner.nextInt();
+		HospitalDatabase db = doctor.getHospital().getHospitalDatabase();
 		switch(testOp) {
-		
 			case 1:
 				BloodTestAnalysis bta = doctor.requestBloodTest(doctor.searchAnExaminedPatient(name).getExamination());
-				System.out.println("Blood test results: " + bta.toString());
+				db.addAnAnalysis(bta);
+				System.out.println("Blood test results\n" + bta.toString() + "\n");
 				break;
 			
 			case 2:
 				RadiologyAnalysis ra = doctor.requestRadiology(doctor.searchAnExaminedPatient(name).getExamination());
-				System.out.println("Radiology test results: " + ra.toString());
+				db.addAnAnalysis(ra);
+				System.out.println("Radiology test results\n" + ra.toString() + "\n");
 				break;
 				
 			case 3:
 				RadiologyAnalysis radiologyTest = doctor.requestRadiology(doctor.searchAnExaminedPatient(name).getExamination());
 				BloodTestAnalysis bloodTest = doctor.requestBloodTest(doctor.searchAnExaminedPatient(name).getExamination());
-				System.out.println("Blood Test Analysis Results:\n" + bloodTest.toString() + "\n");
-				System.out.println("Radiology Analysis Results:\n" + radiologyTest.toString());
+				db.addAnAnalysis(radiologyTest);
+				db.addAnAnalysis(bloodTest);
+				System.out.println("Blood Test Analysis Results\n" + bloodTest.toString() + "\n");
+				System.out.println("Radiology Analysis Results\n" + radiologyTest.toString() + "\n");
 				break;
 				
 			default:
-				//
+				try {
+					throw new InvalidOperationNumberException();
+				} catch (InvalidOperationNumberException e) {
+					System.out.println("Invalid entry, try again.\n");
+					requestAnalysis(doctor);
+				}
 				break;
 		}
 	}
 	
-	
 	private void decideOnASurgery(Doctor sur1, Doctor sur2, Receptionist receptionist, Doctor doctor) {
+		scanner.nextLine();
 		System.out.print("Enter the patient's full name here: ");
 		String patientName3 = scanner.nextLine();
 		Patient patientForSurgery = doctor.searchAnExaminedPatient(patientName3);
@@ -151,7 +164,7 @@ public class DoctorUserMenu {
 		Appointment<Patient, Doctor> surgeryAppointment = new SurgeryAppointment(doctor.searchAnExaminedPatient(patientName3), surgeon, surgeryDate, numberOfDays);
 		receptionist.registerAPatient(surgeon, patientForSurgery, surgeryAppointment.getAppointmentDate());
 		System.out.println("A surgery appointment has been created for " + patientName3 + " with Dr. " + surgeon.getLastName() + " as the surgeon.");
-		System.out.println("Patient will go under surgery on " + surgeryDate.toString() + " and will stay at the hospital for " + numberOfDays + " days.");
+		System.out.println("Patient will undergo surgery on " + surgeryDate.toString() + " and will stay at the hospital for " + numberOfDays + " days.");
 		doctor.addAPatientUnderCare(patientForSurgery);
 		Surgery surgery = new Surgery((Surgeon)surgeon, patientForSurgery);
 		if(surgeryDate == Date.getCurrentDate()) {
@@ -159,7 +172,7 @@ public class DoctorUserMenu {
 		}
 	}
 	
-	
+	@SuppressWarnings("unlikely-arg-type")
 	private void examineAPatient(Doctor doctor, Receptionist receptionist) {
 		int patientIndex = 0;
 		List<Appointment<Patient, Doctor>> todaysAppointments = receptionist.getAppointmentsOfDate(Date.getCurrentDate());
@@ -174,12 +187,12 @@ public class DoctorUserMenu {
 		System.out.print("Please choose a patient to examine.");
 		int patientNumber = scanner.nextInt();
 		Patient patientToExamine = todaysAppointments.get(patientNumber-1).getPatient();
+		receptionist.getSchedule().remove(todaysAppointments.get(patientNumber-1).getPatient());
 		doctor.examine(patientToExamine);
 		System.out.println("Patient is examined.");
 	}
 	
 	public void presentUserMenu(Receptionist receptionist, Doctor doc1, Doctor doc2, Doctor sur1, Doctor sur2, Hospital hospital) {
-		
 		System.out.println("Doctors:");
 		System.out.println("1. " + doc1.toString());
 		System.out.println("2. " + doc2.toString());
@@ -201,8 +214,12 @@ public class DoctorUserMenu {
 				doctor = sur2;
 				break;
 			default:
-				scanner.close();
-				throw new IllegalArgumentException("Invalid operation number.");
+				try {
+					throw new InvalidOperationNumberException();
+				} catch (InvalidOperationNumberException e) {
+					System.out.println("Invalid entry, try again.\n");
+					presentUserMenu(receptionist, doc1, doc2, sur1, sur2, hospital);
+				}
 		}
 		System.out.println("Welcome " + "Dr. " + doctor.getLastName());
 		boolean flag = true;
@@ -221,10 +238,8 @@ public class DoctorUserMenu {
 			System.out.println("9. Examine a Patient");
 			int docOpNum = scanner.nextInt();
 			switch(docOpNum) {
-				
 				case 0:
 					//Quit the program.
-					System.out.println("Quitting the program....");
 					flag = false;
 					break;
 				
@@ -273,6 +288,13 @@ public class DoctorUserMenu {
 					examineAPatient(doctor, receptionist);
 					break;
 					
+				default:
+					try {
+						throw new InvalidOperationNumberException();
+					} catch (InvalidOperationNumberException e) {
+						System.out.println("Invalid entry, try again.\n");
+						continue;
+					}
 			}
 		}
 	}

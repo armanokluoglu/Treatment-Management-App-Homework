@@ -1,10 +1,17 @@
 public class Patient {
-	
 	private Hospital hospital;
 	private String fullName;
 	private Examination examination;
 	private boolean isExamined;
 	private Appointment<Patient, Doctor> appointment;
+	
+	public Patient() {
+		this.hospital = null;
+		this.fullName = "";
+		isExamined = false;
+		setExamination(null);
+		setAppointment(null);
+	}
 	
 	public Patient(Hospital hospital, String fullName) {
 		setHospital(hospital);
@@ -75,5 +82,10 @@ public class Patient {
 
 	private void setExamination(Examination examination) {
 		this.examination = examination;
+	}
+	
+	@Override
+	public String toString() {
+		return getFullName();
 	}
 }

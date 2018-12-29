@@ -1,4 +1,7 @@
 public class Surgeon extends Doctor {
+	public Surgeon() {
+		super();
+	}
 	
 	public Surgeon(Hospital hospital, String firstName, String lastName) {
 		super(hospital, firstName, lastName);

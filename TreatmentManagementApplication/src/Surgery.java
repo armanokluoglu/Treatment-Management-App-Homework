@@ -1,5 +1,4 @@
 public class Surgery extends Treatment {
-	
 	private Surgeon surgeon;
 	private Patient patient;
 	
@@ -10,7 +9,7 @@ public class Surgery extends Treatment {
 
 	@Override
 	public void startTreatment() {
-		this.patient = (InmatePatient) getPatient();
+		this.patient = new InmatePatient(getPatient());
 		// TODO Auto-generated method stub
 	}
 	

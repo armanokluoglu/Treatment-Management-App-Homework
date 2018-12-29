@@ -8,7 +8,7 @@ public class Appointment<P extends Patient, D extends Doctor> {
 		setDoctor(doctor);
 		setAppointmentDate(appointmentDate);
 	}
-
+	
 	public P getPatient() {
 		return patient;
 	}

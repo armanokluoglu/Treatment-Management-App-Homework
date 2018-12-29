@@ -18,6 +18,6 @@ public class BloodTestAnalysis extends Analysis {
 	
 	public String toString() {
 		return "Number of normal blood cells: " + numOfNormalBloodCells + " trillion \n" + 
-			   "Number of abnormal blood cells: " + numOfAbnormalBloodCells + "trillion";
+			   "Number of abnormal blood cells: " + numOfAbnormalBloodCells + " billion";
 	}
 }

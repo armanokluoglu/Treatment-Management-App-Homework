@@ -8,7 +8,7 @@ public class Hospital {
 	
 	public Hospital(String name) {
 		setName(name);
-		setReceptionist(null);
+		this.receptionist = null;
 		hospitalDatabase = new HospitalDatabase(new ArrayList<Patient>(), new ArrayList<Doctor>());
 	}
 	
@@ -89,17 +89,10 @@ public class Hospital {
 		this.hospitalDatabase = hospitalDatabase;
 	}
 
-	public Analysis searchAnalysis(String patientName) {
+	public List<Analysis> searchAnalysis(String patientName) throws AnalysisNotFoundException {
 		if(patientName == null) {
 			throw new IllegalArgumentException("Given patient name cannot be null.");
 		}
-		try {
-			return hospitalDatabase.findTheAnalysis(patientName);
-			
-		} catch (AnalysisNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
+		return hospitalDatabase.findTheAnalysis(patientName);
 	}
 }

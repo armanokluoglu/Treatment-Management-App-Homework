@@ -8,6 +8,7 @@ public class ReceptionistUserMenu {
 		this.receptionist = receptionist;
 	}
 	
+	@SuppressWarnings("resource")
 	public void presentMenu(Doctor doc1, Doctor doc2, Doctor sur1, Doctor sur2, Hospital hospital) {
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("Receptionists:");
@@ -21,18 +22,19 @@ public class ReceptionistUserMenu {
 				System.out.println("1. Register Patient");
 				int recOpNum = scanner.nextInt();
 				if(recOpNum == 1) {
+					scanner.nextLine();
 					System.out.print("Enter the name of the patient (ex: Chris Pine): ");
 					String patientName = scanner.nextLine();
 					System.out.print("Please enter the doctor's last name here: ");
 					String docName = scanner.nextLine();
 					Doctor doc =  null;
-					if(docName == "House") {
+					if(docName.equals("House")) {
 						doc = doc1;
-					}else if(docName == "Cox") {
+					}else if(docName.equals("Cox")) {
 						doc = doc2;
-					}else if(docName == "Strange") {
+					}else if(docName.equals("Strange")) {
 						doc = sur1;
-					}else if(docName == "Turk") {
+					}else if(docName.equals("Turk")) {
 						doc = sur2;
 					}else {
 						scanner.close();
@@ -41,20 +43,27 @@ public class ReceptionistUserMenu {
 					System.out.print("Please enter a date for the appointment (yyyy-mm-dd): ");
 					String appointmentDate = scanner.nextLine();
 					Date apDate = new Date(appointmentDate);
-					receptionist.registerAPatient(doc, new Patient(hospital, patientName), apDate);
-					
+					receptionist.registerAPatient(doc, new WalkingCasePatient(hospital, patientName), apDate);
+					System.out.println("Patient registered.");
 				} else if(recOpNum == 0) {
-					scanner.close();
 					break;
 					
 				} else {
-					scanner.close();
-					throw new IllegalArgumentException("Invalid operation number.");
+					try {
+						throw new InvalidOperationNumberException();
+					} catch (InvalidOperationNumberException e) {
+						System.out.println("Invalid entry, try again.\n");
+						continue;
+					}
 				}
 			}
 		} else {
-			scanner.close();
-			throw new IllegalArgumentException("Invalid operation number.");
+			try {
+				throw new InvalidOperationNumberException();
+			} catch (InvalidOperationNumberException e) {
+				System.out.println("Invalid entry, try again.\n");
+				presentMenu(doc1, doc2, sur1, sur2, hospital);
+			}
 		}
 	}
 }
