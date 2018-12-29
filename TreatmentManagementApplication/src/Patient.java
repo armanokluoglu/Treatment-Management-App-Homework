@@ -1,11 +1,12 @@
 public class Patient {
-	private Hospital<Patient> hospital;
+	
+	private Hospital hospital;
 	private String fullName;
 	private Examination examination;
 	private boolean isExamined;
-	private Appointment appointment;
+	private Appointment<Patient, Doctor> appointment;
 	
-	public Patient(Hospital<Patient> hospital, String fullName) {
+	public Patient(Hospital hospital, String fullName) {
 		setHospital(hospital);
 		setFullName(fullName);
 		isExamined = false;
@@ -22,11 +23,11 @@ public class Patient {
 		setExamination(new Examination(this, doctor));
 	}
 
-	public Hospital<Patient> getHospital() {
+	public Hospital getHospital() {
 		return hospital;
 	}
 	
-	public void setHospital(Hospital<Patient> hospital) {
+	public void setHospital(Hospital hospital) {
 		this.hospital = hospital;
 	}
 	
@@ -38,11 +39,11 @@ public class Patient {
 		this.fullName = fullName;
 	}
 	
-	public Appointment getAppointment() {
+	public Appointment<Patient, Doctor> getAppointment() {
 		return appointment;
 	}
 
-	public void setAppointment(Appointment appointment) {
+	public void setAppointment(Appointment<Patient, Doctor> appointment) {
 		this.appointment = appointment;
 	}
 

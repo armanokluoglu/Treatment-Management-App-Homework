@@ -3,11 +3,11 @@ import java.util.List;
 
 public class Receptionist {
 	
-	private Hospital<Patient> hospital;
+	private Hospital hospital;
 	private String fullName;
 	private List<Appointment<Patient, Doctor>> schedule;
 	
-	public Receptionist(Hospital<Patient> hospital, String fullName) {
+	public Receptionist(Hospital hospital, String fullName) {
 		setHospital(hospital);
 		setFullName(fullName);
 		schedule = new ArrayList<Appointment<Patient, Doctor>>();
@@ -42,10 +42,10 @@ public class Receptionist {
 	
 	public List<Appointment<Patient, Doctor>> getSchedule()	{return schedule;}
 	
-	public Hospital<Patient> getHospital() {
+	public Hospital getHospital() {
 		return hospital;
 	}
-	public void setHospital(Hospital<Patient> hospital) {
+	public void setHospital(Hospital hospital) {
 		this.hospital = hospital;
 	}
 	public String getFullName() {

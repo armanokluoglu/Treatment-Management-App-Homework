@@ -2,13 +2,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Doctor {
-	private Hospital<Patient> hospital;
+	private Hospital hospital;
 	private String firstName;
 	private String lastName;
 	private List<Patient> examinedPatients;
 	private List<Patient> patientsUnderCare;
 	
-	public Doctor(Hospital<Patient> hospital, String firstName, String lastName) {
+	public Doctor(Hospital hospital, String firstName, String lastName) {
 		setHospital(hospital);
 		setFirstName(firstName);
 		setLastName(lastName);
@@ -27,6 +27,11 @@ public class Doctor {
 	
 	public BloodTestAnalysis requestBloodTest(Examination examination) {
 		return examination.requestBloodTest();
+	}
+	
+	
+	public Prescription writeAPrescription(String medName, double medDosage) {
+		return new Prescription(medName, medDosage);
 	}
 	
 	public Patient searchAnExaminedPatient(String name) {
@@ -55,12 +60,16 @@ public class Doctor {
 		return patientsUnderCare;
 	}
 	
+	public void addAPatientUnderCare(Patient patient) {
+		patientsUnderCare.add(patient);
+	}
 	
-	public Hospital<Patient> getHospital() {
+	
+	public Hospital getHospital() {
 		return hospital;
 	}
 	
-	public void setHospital(Hospital<Patient> hospital) {
+	public void setHospital(Hospital hospital) {
 		this.hospital = hospital;
 	}
 	

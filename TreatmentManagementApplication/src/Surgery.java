@@ -1,4 +1,5 @@
 public class Surgery extends Treatment {
+	
 	private Surgeon surgeon;
 	private Patient patient;
 	

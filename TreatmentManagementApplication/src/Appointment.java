@@ -22,14 +22,23 @@ public class Appointment<P extends Patient, D extends Doctor> {
 	}
 
 	public void setPatient(P patient) {
+		if(patient == null) {
+			throw new IllegalArgumentException("Given patient is null.");
+		}
 		this.patient = patient;
 	}
 
 	public void setDoctor(D doctor) {
+		if(doctor == null) {
+			throw new IllegalArgumentException("Given doctor is null.");
+		}
 		this.doctor = doctor;
 	}
 
 	public void setAppointmentDate(Date appointmentDate) {
+		if(appointmentDate == null) {
+			throw new IllegalArgumentException("Given appointment date is null.");
+		}
 		this.appointmentDate = appointmentDate;
 	}
 	

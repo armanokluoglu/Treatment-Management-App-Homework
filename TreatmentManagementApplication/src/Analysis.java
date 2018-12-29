@@ -3,7 +3,7 @@ public abstract class Analysis {
 	private Patient patient;
 	
 	public Analysis(Patient patient) {
-		this.patient = patient;
+		setPatient(patient);
 	}
 
 	public Patient getPatient() {
@@ -11,6 +11,9 @@ public abstract class Analysis {
 	}
 
 	public void setPatient(Patient patient) {
+		if(patient == null) {
+			throw new IllegalArgumentException("Given patient is null.");
+		}
 		this.patient = patient;
 	}
 	
